@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "dev" branch
   issues:
     types: [ "opened" ]
-  pull_request:
-    types: [ "opened" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -19,14 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      pull-requests: write
     steps:
-      - name: First interaction
-        uses: actions/first-interaction@v1.3.0
-        with:
-          # Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}
-          repo-token: ${{ secrets.ACCESS_TOKEN }}
-          # Comment to post on an individual's first issue
-          issue-message: hi
-          # Comment to post on an individual's first pull request
-          pr-message: hello
+      - name: "Comment about changes we can't accept"
+        env:
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          URL: ${{ github.event.issue.html_url }}
+        run: |
+          gh issue comment $URL --body 'hi, this is a comment for you'
