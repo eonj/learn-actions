@@ -6,7 +6,7 @@ name: Issue created
 on:
   # Triggers the workflow on push or pull request events but only for the "dev" branch
   issues:
-    types: [ "opened" ]
+    types: [ "opened", "reopened ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: "Comment about changes we can't accept"
+      - name: "Comment"
         env:
           GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           URL: ${{ github.event.issue.html_url }}
